@@ -1,0 +1,33 @@
+@import '~antd/dist/antd.css';
+.App {
+  text-align: center;
+}
+.header,#root {
+  position: absolute;
+  width: 100%;
+  top:0;
+  left:0;
+}
+.modal{
+  display: none
+}
+#show-box-info .modal-content {
+  height: 200px;
+}
+.modal-body{
+  font-size: 12px;
+}
+.banner{
+  display:block;
+  width: 100%;
+  margin: 0 auto;
+}
+.banner img{
+  width:50px;
+  height: 50px;
+  vertical-align: top;
+  cursor: pointer;
+}
+.ant-tree li a{
+  color:#fff;
+}

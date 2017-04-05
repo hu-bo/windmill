@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="animate.css">
+    <link rel="stylesheet" href="modal.css">
+</head>
+<body>
+    <button onclick="modal.show()">
+        show
+    </button>
+    <div id="show-box-info" class="modal animated">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="text-center">设备信息</h4>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>
+                        <span>111:</span>
+                        <span>a</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">确认</button>
+                <button type="button" class="btn btn-default cancel" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div> 
+    <script src="utils.js"></script>
+    <script src="drag.js"></script>
+    <script src="modal.js"></script>
+    <script>
+        var modal = new Modal({
+            el:"#show-box-info",
+            enterClass:'rotateInDownRight',
+		    exitClass:'rotateOutDownRight'
+        })
+    </script>
+</body>
+</html>
