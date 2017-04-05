@@ -10,12 +10,12 @@ import WindmillList from 'components/windmill-list'
 import { Vector3 } from 'three'
 import camera from 'three/camera'
 import TWEEN from 'tween.js'
-import { controls, domEvents } from 'three/controls'
+import { controls } from 'three/controls'
 
 var cameraPosition = new TWEEN.Tween(camera.position)
 
 const router = () => (
-  <Router>
+  <HashRouter>
     <div>
       <div className="header text-center">
         <div className="banner">
@@ -35,7 +35,7 @@ const router = () => (
       <Route exact path="/" component={Home}/>
       <Route path="/WindmillList" component={WindmillList}/>
     </div>
-  </Router>
+  </HashRouter>
 )
 
 class Home extends Component{
