@@ -32,6 +32,10 @@ var windmills = (function (l, m)　{
           staus = 0
           msg = '发电机电流过大'
         }
+        if (i === 0 && j === 0) {
+          staus = 0
+          msg = '发电机电流不稳定,需要派人检修'
+        }
         windmill.userData = {
               "状态": staus,
               "名称": "windmil" + i + j,

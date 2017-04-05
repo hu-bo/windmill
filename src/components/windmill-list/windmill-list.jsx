@@ -4,15 +4,20 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import axios from 'axios';
 import { format } from 'utils'
 // three
+import { Vector3 } from 'three'
+import camera from 'three/camera'
 import scene from 'three/scene'
+import TWEEN from 'tween.js'
 import { controls, domEvents } from 'three/controls'
 import data from 'assets/json/data.json';
 
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
-//this.search = input.input.refs.input
+var cameraPosition = new TWEEN.Tween(camera.position);
+var cameraRotationX = new TWEEN.Tween(camera.rotation.x);
+
 const x = 3;
-const y = 2;
+var y = 2;
 const z = 1;
 var gData = [
   {
@@ -31,29 +36,7 @@ var wrapStyle = {
   maxWidth: '160px'
 };
 
-const generateData = (_level, _preKey, _tns) => {
-  const preKey = _preKey || '0';
-  const tns = _tns || gData;
-
-  const children = [];
-  for (let i = 0; i < x; i++) {
-    const key = `${preKey}-${i}`;
-    tns.push({ title: key, key });
-    if (i < y) {
-      children.push(key);
-    }
-  }
-  if (_level < 0) {
-    return tns;
-  }
-  const level = _level - 1;
-  children.forEach((key, index) => {
-    tns[index].children = [];
-    return generateData(level, key, tns[index].children);
-  });
-};
-// generateData(z)
-// console.log(gData)
+// 生成一层数据机构
 const dataList = [];
 const generateList = (data) => {
   for (let i = 0; i < data.length; i++) {
@@ -92,23 +75,24 @@ class SearchTree extends Component {
   onExpand = (expandedKeys) => {
     this.setState({
       expandedKeys,
-      autoExpandParent: true,
+      autoExpandParent: false,
     });
   }
   onChange = (e) => {
     const value = e.target.value;
-    // console.log(dataList)
+    console.log(value)
+    console.log(gData)
     const expandedKeys = dataList.map((item) => {
-      console.log(item.key.indexOf(value))
       if (item.key.indexOf(value) > -1) {
         return getParentKey(item.key, gData);
       }
       return null;
     }).filter((item, i, self) => item && self.indexOf(item) === i);
+
     this.setState({
-      searchValue: value,
-      autoExpandParent: true
+      searchValue: value
     });
+    console.log(this.state)
   }
   onMouseEnter = () => {
     controls.enabled = false;
@@ -120,8 +104,31 @@ class SearchTree extends Component {
     controls.enableZoom = true;
     controls.enablePan = true;
   }
-  handleClick = () => {
-    console.log(scene)
+  handleClick = (key) => {
+    var key = key[0];
+    scene.children && scene.children.some(function (child) {
+      if (child.name === 'all-windmill') {
+        child.children.some(function (windmill) {
+          if (windmill.name === key) {
+            var target = windmill;
+            cameraPosition.to(new Vector3(target.position.x + 5, target.position.y - 2, target.position.z + 15), 600);
+            cameraPosition.start();
+
+            // cameraRotation.start()
+            cameraPosition.onComplete(function () {
+              controls.autoRotate = true;
+              controls.target = target.position;
+              /*cameraRotationX.to(10, 600)
+              cameraRotationX.start()*/
+              controls.update();
+              // camera.rotation.set(new THREE.Euler(-0.20783558173798408, 0.09429695894176246, 0.019853346558090398))
+            })
+            return true
+          }
+        })
+        return true;
+      };
+    });
   }
   componentWillMount () {
     // 获取数据
@@ -133,7 +140,6 @@ class SearchTree extends Component {
           originaFormat: ['名称', '名称', '状态']
         });
         generateList(gData);
-        console.log(gData)
         this.setState( () => {
           return {
             windmilList: gData
@@ -150,26 +156,40 @@ class SearchTree extends Component {
   }
   render() {
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
-    const loop = data => data.map((item) => {
-      const index = item.key.search(searchValue);
-      const beforeStr = item.key.substr(0, index);
-      const afterStr = item.key.substr(index + searchValue.length);
-      const title = index > -1 ? (
-        <span>
-          {beforeStr}
-          <span style={{ color: '#5FA9DA' }}>{searchValue}</span>
-          {afterStr}
-        </span>
-      ) : <span>{item.key}</span>;
-      if (item.children) {
-        return (
-          <TreeNode key={item.key} title={title} onMouseEnter={this.handleClick}>
-            {loop(item.children)}
-          </TreeNode>
-        );
+    const loop = data => {
+      var temp = [];
+      for (var i = 0; i < data.length; i++){
+        var item = data[i];
+        var warningStyle = {color: '#fff'};
+        var index = item.key.search(searchValue);
+        if (item.status !== 1 && !item.children) {
+          warningStyle = {
+            color: 'red'
+          }
+        }
+        const beforeStr = item.key.substr(0, index);
+        const afterStr = item.key.substr(index + searchValue.length);
+        if (!item.children && !~index) {
+          continue;
+        }
+        const title = index > -1 ? (
+          <span style={warningStyle}>
+            {beforeStr}
+            <span style={{ color: '#83B5DA' }}>{searchValue}</span>
+            {afterStr}
+          </span>
+        ) : <span style={warningStyle}>{item.key}</span>;
+        if (item.children) {
+          temp.push((
+            <TreeNode key={item.key} title={title}>
+              {loop(item.children)}
+            </TreeNode>
+          ));
+        }
+        temp.push(<TreeNode key={item.key} title={title}/>);
       }
-      return <TreeNode key={item.key} title={title} onMouseEnter={this.handleClick}/>;
-    });
+      return temp
+    };
     return (
       <div
         style={wrapStyle}
@@ -186,6 +206,7 @@ class SearchTree extends Component {
         style={{ width: 160, height: 400, color:'#fff' }}
         >
           <Tree
+            onSelect={this.handleClick}
             onExpand={this.onExpand}
             expandedKeys={expandedKeys}
             autoExpandParent={autoExpandParent}

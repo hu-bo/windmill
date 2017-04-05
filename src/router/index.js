@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import {
   BrowserRouter as Router,
   HashRouter,
@@ -6,15 +6,23 @@ import {
   Link
 } from 'react-router-dom'
 import WindmillList from 'components/windmill-list'
+// three
+import { Vector3 } from 'three'
+import camera from 'three/camera'
+import TWEEN from 'tween.js'
+import { controls, domEvents } from 'three/controls'
+
+var cameraPosition = new TWEEN.Tween(camera.position)
+
 const router = () => (
-  <HashRouter>
+  <Router>
     <div>
       <div className="header text-center">
         <div className="banner">
-          <Link to="/" title="主页">
+          <Link to='./' title="主页">
             <img src={window.proPath + 'img/1.png'}/>
           </Link>
-          <Link to="/WindmillList" title="1号基地发电机">
+          <Link to="./WindmillList" title="1号基地发电机">
             <img src={window.proPath + 'img/2.png'}/>
           </Link>
           <Link to="/" title="暂未开发">
@@ -27,14 +35,26 @@ const router = () => (
       <Route exact path="/" component={Home}/>
       <Route path="/WindmillList" component={WindmillList}/>
     </div>
-  </HashRouter>
+  </Router>
 )
 
-const Home = () => (
-  <div>
-  </div>
-)
-
+class Home extends Component{
+  componentDidMount () {
+    cameraPosition.to(new Vector3(12.51448093782977, 27.30322972307993, 129.47237428078742), 600)
+    cameraPosition.start()
+    camera.rotation.set( -0.20783558173798408,  0.09429695894176246,  0.019853346558090398)
+    cameraPosition.onComplete(function () {
+      controls.autoRotate = true
+      controls.target = new Vector3(0, 0, 0)
+      controls.update()
+    })
+  }
+  render () {
+    return (
+      <div />
+    );
+  }
+}
 /*const Topics = ({ match }) => (
   <div>
     <h2>Topics</h2>

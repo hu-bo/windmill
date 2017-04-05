@@ -4,7 +4,6 @@ import {
   Link
 } from 'react-router-dom'
 // import { Button } from 'antd'
-import logo from './logo.svg'
 import './App.css'
 
 class App extends Component {

@@ -58,12 +58,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hb-bobo/three.js.git"
+    "url": "git+https://github.com/hb-bobo/windmill.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hb-bobo/three.js/issues"
+    "url": "https://github.com/hb-bobo/windmill/issues"
   },
-  "homepage": "https://github.com/hb-bobo/three.js#readme"
+  "homepage": "https://github.com/hb-bobo/windmill#readme"
 }
