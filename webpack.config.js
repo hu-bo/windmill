@@ -74,17 +74,26 @@ module.exports = {
         }
       },
       {
-        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+        test: /\.(png|jpg|gif)$/,
         loader: 'url-loader',
         options: {
-          limit: 10000
+          limit: 10000,
+          name: utils.assetsPath('img/[name].[ext]')
+        }
+      },
+      {
+        test: /\.(svg|eot|ttf|woff|woff2)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('fonts/[name].[ext]')
         }
       },
       {
         test: /\.(json)$/,
         loader: 'url-loader',
         options: {
-          limit: 10000000,
+          limit: 1000,
           name: utils.assetsPath('json/[name].[ext]')
         }
       },
@@ -92,7 +101,7 @@ module.exports = {
         test: /\.(obj|mtl)$/,
         loader: 'url-loader',
         options: {
-          limit: 100000,
+          limit: 10000,
           name: utils.assetsPath('obj/[name].[ext]')
         }
       }
@@ -108,13 +117,13 @@ module.exports = {
   devServer: {
     port:8082,
     proxy: { // proxy URLs to backend development server
-      '/api':{
-        target: "http://localhost:8080/src/",
-        pathRewrite: {"^/api" : ""}
+      '/assets':{
+        target: "http://localhost:8082",
+        pathRewrite: {"^/assets" : "src/assets"}
       },
-      '/api/*':{
-        target: "http://localhost:8082/src/",
-        pathRewrite: {"^/propath" : "./src/"}
+      '/api':{
+        target: "http://localhost:8084",
+        pathRewrite: {"/api" : ""}
       }
     },
     contentBase: path.join(__dirname), // boolean | string | array, static file location
@@ -128,7 +137,7 @@ module.exports = {
   plugins: [
     new HtmlwebpackPlugin({
       title:'THREE',
-      template: 'src/index.html',
+      template: 'index.html',
       inject: 'body',
       hash:true,
     }),

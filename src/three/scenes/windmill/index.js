@@ -1,11 +1,14 @@
 var THREE = require('three')
 import camera from 'three/camera'
 import scene from 'three/scene'
+import { renderer, animate } from 'three/renderer'
 import TWEEN from 'tween.js'
 import { loadJson } from 'three/loaders'
 import { math } from 'utils'
 import { controls, domEvents } from 'three/controls'
 import Modal from 'plugins/Modal/index-es6'
+import axios from 'axios';
+import windmillUrl from 'assets/json/windmill.json'
 /*
   @param {number} col
   @param {number} row
@@ -14,9 +17,10 @@ import Modal from 'plugins/Modal/index-es6'
 var tempData = []
 var windmills = (function (l, m)　{
   loadJson([
-      // './assets/json/roads.json',
-      window.proPath + '/json/windmill.json'
+      window.proPath + 'json/windmill.json',
+      //windmillUrl
   ],function (obj) {
+    console.log(obj)
     var group = new THREE.Group();
     group.name = 'all-windmill'
     for (var i = 0; i < l; i++) {
@@ -28,7 +32,7 @@ var windmills = (function (l, m)　{
         windmill.position.y = 19
         windmill.position.z = j*50 - 140
         windmill.name = 'windmill' + i +j
-        if (i===4 && (j === 4 || j === 1)) {
+        /*if (i===4 && (j === 4 || j === 1)) {
           staus = 0
           msg = '发电机电流过大'
         }
@@ -45,29 +49,37 @@ var windmills = (function (l, m)　{
               "实际功率": math.random(90,100) + "KW",
               "错误信息": msg,
               "其他":""
-        }
+        }*/
         tempData.push(windmill.userData)
         group.add(windmill)
         addWindmilEvent(windmill)
         // windmill.children[0].rotateOnAxis (windmill.children[0].children[0], 0.1)
       }
     }
-    scene.add(group)
-    addWindmillStatus(group)
-    /*fetch('/api',{
-        method:"post",
-        headers:{
-            "Content-type":"application:/x-www-form-urlencoded:charset=UTF-8"
-        },
-        body:JSON.stringify(tempData)
-    })
-    .then(function(data){
-        console.log("请求成功，JSON解析后的响应数据为:",data.json());
-    })
-    .catch(function(err){
-        console.log("Fetch错误:"+err);
-    });*/
-    return group
+
+    // 获取数据
+    axios.get( window.proPath + 'json/data.json')
+      .then( response => {
+        var windmillData = response.data.windmillData;
+        var windmills = [];
+        console.log(windmillData)
+        scene.children && scene.children.some(function (child) {
+          if (child.name === 'all-windmill') {
+            windmills = child.children;
+          };
+        });
+        windmillData.forEach(function (data, i) {
+          windmills[i].userData = data
+        })
+        // 加状态
+        addWindmillStatus(group)
+      })
+      .catch(function (error) {
+      });
+     scene.add(group)
+      
+      animate()
+      return group
   })
 })(8,6)
 
