@@ -6,7 +6,7 @@ import THREEx from './threex.domevents'
 var controls = new OrbitControls(camera)
 // 鼠标控制
 controls.addEventListener('change', function (ev) {
-    renderer.render(scene, camera);
+    // renderer.render(scene, camera);
 })
 //controls.maxPolarAngle = Math.PI / 2;
 controls.enableZoom = true;

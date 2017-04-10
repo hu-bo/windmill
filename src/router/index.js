@@ -12,24 +12,26 @@ import camera from 'three/camera'
 import TWEEN from 'tween.js'
 import { controls } from 'three/controls'
 
-var cameraPosition = new TWEEN.Tween(camera.position)
+import homeBg from 'assets/img/1.png'
+import windmillBg from 'assets/img/2.png'
 
+var cameraPosition = new TWEEN.Tween(camera.position)
 const router = () => (
   <HashRouter>
     <div>
       <div className="header text-center">
         <div className="banner">
           <Link to='./' title="主页">
-            <img src={window.proPath + 'img/1.png'}/>
+            <img src={homeBg}/>
           </Link>
           <Link to="./WindmillList" title="1号基地发电机">
-            <img src={window.proPath + 'img/2.png'}/>
+            <img src={windmillBg}/>
           </Link>
           <Link to="/" title="暂未开发">
-            <img className="not-allowed" src={window.proPath + 'img/2.png'}/>
+            <img className="not-allowed" src={windmillBg}/>
           </Link>
-          <img className="not-allowed" src={window.proPath + 'img/2.png'} title="暂未开发"/>
-          <img className="not-allowed" src={window.proPath + 'img/2.png'} title="暂未开发"/>
+          <img className="not-allowed" src={windmillBg} title="暂未开发"/>
+          <img className="not-allowed" src={windmillBg} title="暂未开发"/>
         </div>
       </div>
       <Route exact path="/" component={Home}/>

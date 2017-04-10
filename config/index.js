@@ -14,7 +14,7 @@ module.exports = {
     // Before setting to `true`, make sure to:
     // npm install --save-dev compression-webpack-plugin
     productionGzip: false,
-    productionGzipExtensions: ['js', 'css', 'json', 'obj'],
+    productionGzipExtensions: ['js', 'css'],
     // Run the build command with an extra argument to
     // View the bundle analyzer report after build finishes:
     // `npm run build --report`
@@ -28,7 +28,8 @@ module.exports = {
     assetsSubDirectory: './assets',
     assetsPublicPath: '',
     proxyTable: {
-      '/api': 'http://localhost:8082/src/'
+      'assets': 'http://localhost:8083/src/',
+      '/assets': 'http://localhost:8083/src/'
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

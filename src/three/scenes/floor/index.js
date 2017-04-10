@@ -1,9 +1,9 @@
 import { Mesh, TextureLoader, BoxGeometry, MeshBasicMaterial, RepeatWrapping } from 'three'
 import scene from 'three/scene'
 import { renderer } from 'three/renderer'
-import 'assets/img/grass.png'
+import grassImg from 'assets/img/grass.png'
 var initFloor = function () {
-  var texture = new TextureLoader().load( window.proPath + '/img/grass.png' );
+  var texture = new TextureLoader().load(grassImg);
   /*var spriteMaterial = new SpriteMaterial( { map: texture, color: 0xffffff } );*/
   var maxAnisotropy = renderer.getMaxAnisotropy();
   var floorGeometry = new BoxGeometry( 10000, 0.2, 10000 );

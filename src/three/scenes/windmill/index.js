@@ -1,11 +1,14 @@
 var THREE = require('three')
 import camera from 'three/camera'
 import scene from 'three/scene'
+import { renderer, animate } from 'three/renderer'
 import TWEEN from 'tween.js'
 import { loadJson } from 'three/loaders'
 import { math } from 'utils'
 import { controls, domEvents } from 'three/controls'
 import Modal from 'plugins/Modal/index-es6'
+
+import windmillUrl from 'assets/json/windmill.json'
 /*
   @param {number} col
   @param {number} row
@@ -14,9 +17,10 @@ import Modal from 'plugins/Modal/index-es6'
 var tempData = []
 var windmills = (function (l, m)　{
   loadJson([
-      // './assets/json/roads.json',
-      window.proPath + '/json/windmill.json'
+      window.proPath + 'json/windmill.json',
+      //windmillUrl
   ],function (obj) {
+    console.log(obj)
     var group = new THREE.Group();
     group.name = 'all-windmill'
     for (var i = 0; i < l; i++) {
@@ -54,6 +58,7 @@ var windmills = (function (l, m)　{
     }
     scene.add(group)
     addWindmillStatus(group)
+    animate()
     /*fetch('/api',{
         method:"post",
         headers:{

@@ -19,11 +19,14 @@ import './scenes/sky'
 import './scenes/floor'
 import './scenes/windmill'
 // assets:3D model,img
+import 'assets/json/road.json'
+import 'assets/json/windmill.json'
 
 /*loadJson([
     window.proPath + 'json/wall.json'
-    ])*/
+  ])*/
 // render to browser
-renderer.render(scene, camera)
-document.body.appendChild( renderer.domElement )
-animate()
+window.setTimeout(function () {
+  renderer.render(scene, camera)
+  document.body.appendChild( renderer.domElement )
+},10)
