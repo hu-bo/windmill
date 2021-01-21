@@ -1,6 +1,6 @@
 # windmill
 风车发电模型
-<a href="http://www.luuxii.com/job/three/">点击查看效果</a>
+<a href="https://hb-bobo.github.io/windmill/">点击查看效果</a>
 
 
 ## 目录结构
